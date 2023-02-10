@@ -26,15 +26,6 @@ namespace TaskManagerCourse.Client.ViewModels
         public DelegateCommand<object> LoginFromCacheCommand { get; private set; }
         #endregion
 
-        public LoginViewModel()
-        {
-            _usersRequestService = new UsersRequestService();
-            CurrentUserCache = GetUserCache();
-
-            GetUserFromDBCommand = new DelegateCommand<object>(GetUserFromDB);
-            LoginFromCacheCommand = new DelegateCommand<object>(LoginFromCache);
-        }
-
         #region PROPERTIES
         private string _cachePath = Path.GetTempPath() + "usertaskmanagercourse.txt";
 
@@ -78,6 +69,16 @@ namespace TaskManagerCourse.Client.ViewModels
             }
         }
         #endregion
+
+        public LoginViewModel()
+        {
+            _usersRequestService = new UsersRequestService();
+            CurrentUserCache = GetUserCache();
+
+            GetUserFromDBCommand = new DelegateCommand<object>(GetUserFromDB);
+            LoginFromCacheCommand = new DelegateCommand<object>(LoginFromCache);
+        }
+
 
         #region METHODS
 

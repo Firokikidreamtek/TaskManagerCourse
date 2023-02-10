@@ -182,7 +182,7 @@ namespace TaskManagerCourse.Client.ViewModels
         {
             Login login = new Login();
             login.Show();
-            _currentWindow.Close();            
+            _currentWindow.Close();
         }
 
         private void OpenUsersManagement()
@@ -207,7 +207,7 @@ namespace TaskManagerCourse.Client.ViewModels
             {
                 Thread.Sleep(minutes * 1000);
             });
-            StopWork();
+            //StopWork();
         }
     }
 }
