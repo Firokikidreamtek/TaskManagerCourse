@@ -12,7 +12,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        
+
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -47,7 +47,7 @@
                                                Style="{StaticResource commonTBlock}"/>
 
                                     <Image Source="{Binding Path=Image}" Width="100" Height="100"/>
-                                    
+
                                     <Button Content="Open" Command="{Binding Path=DataContext.ShowProjectInfoCommand,
                                             RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                             CommandParameter="{Binding Path=Model.Id}"
@@ -98,7 +98,7 @@
             <TextBlock Grid.Row="1" Text="{Binding SelectedProject.Model.Description}"
                        Style="{StaticResource commonTBlock}"/>
             <Button Grid.Row="2" Content="Add users" 
-                    Command="{Binding OpenNewUsersToProjectCommand}">
+                    Command="{Binding OpenNewUsersToProjectCommand}" Width="150">
                 <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource commonBtn}">
                         <Style.Triggers>
@@ -113,8 +113,14 @@
             </Button>
             <Button Grid.Row="3" Content="Desks" 
                     Command="{Binding OpenProjectDesksPageCommand}" 
-                    Style="{StaticResource commonBtn}"/>
+                    Style="{StaticResource commonBtn}"
+                    Width="150"/>
             <ListBox Grid.Row="4" ItemsSource="{Binding ProjectUsers}">
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Remove" Command="{Binding DeleteUserFromProjectCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+                    </ContextMenu>
+                </ListBox.ContextMenu>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Path=Email}" Style="{StaticResource commonTBlock}"/>
@@ -122,6 +128,6 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-        
+
     </Grid>
 </Page>

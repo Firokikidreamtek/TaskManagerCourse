@@ -29,6 +29,7 @@ namespace TaskManagerCourse.Client.ViewModels
         public DelegateCommand SelectPhotoForProjectCommand { get; private set; }
         public DelegateCommand OpenNewUsersToProjectCommand { get; private set; }
         public DelegateCommand AddUsersToProjectCommand { get; private set; }
+        public DelegateCommand<object> DeleteUserFromProjectCommand { get; private set; }
 
         public DelegateCommand OpenProjectDesksPageCommand { get; private set; }
 
@@ -49,6 +50,7 @@ namespace TaskManagerCourse.Client.ViewModels
             ShowProjectInfoCommand = new DelegateCommand<object>(ShowProjectInfo);
             CreateOrUpdateProjectCommand = new DelegateCommand(CreateOrUpdateProject);
             DeleteProjectCommand = new DelegateCommand(DeleteProject);
+            DeleteUserFromProjectCommand = new DelegateCommand<object>(DeleteUserFromProject);
 
             SelectPhotoForProjectCommand = new DelegateCommand(SelectPhotoForProject);
             OpenNewUsersToProjectCommand = new DelegateCommand(OpenNewUsersToProject);
@@ -91,8 +93,8 @@ namespace TaskManagerCourse.Client.ViewModels
         public ModelClient<ProjectModel> SelectedProject
         {
             get => _selectedProject;
-            set 
-            { 
+            set
+            {
                 _selectedProject = value;
                 RaisePropertyChanged(nameof(SelectedProject));
 
@@ -108,8 +110,8 @@ namespace TaskManagerCourse.Client.ViewModels
         public List<UserModel> ProjectUsers
         {
             get => _projectUsers;
-            set 
-            { 
+            set
+            {
                 _projectUsers = value;
                 RaisePropertyChanged(nameof(ProjectUsers));
             }
@@ -117,7 +119,7 @@ namespace TaskManagerCourse.Client.ViewModels
 
         public List<UserModel> NewUsersForSelectedProject
         {
-            get 
+            get
             {
                 var allUsers = _usersRequestService.GetAllUsers(_token);
 
@@ -132,8 +134,8 @@ namespace TaskManagerCourse.Client.ViewModels
         public List<UserModel> SelectedUsersForProject
         {
             get => _selectedUsersForProject;
-            set 
-            { 
+            set
+            {
                 _selectedUsersForProject = value;
                 RaisePropertyChanged(nameof(SelectedUsersForProject));
             }
@@ -197,7 +199,7 @@ namespace TaskManagerCourse.Client.ViewModels
                 UpdateProject();
             }
             UpdatePage();
-            
+
         }
 
         private void CreateProject()
@@ -266,6 +268,19 @@ namespace TaskManagerCourse.Client.ViewModels
                 var page = new ProjectDesksPage();
                 _mainWindowVM.OpenPage(page, $"Desks of {SelectedProject.Model.Name}", new ProjectDesksPageViewModel(_token, SelectedProject.Model, _mainWindowVM));
             }
+        }
+
+
+        private void DeleteUserFromProject(object obj)
+        {
+            var user = (UserModel)obj;
+            SelectedUsersForProject.Add(user);
+            var resultAction = _projectsRequestService.RemoveUsersFromProject(_token, SelectedProject.Model.Id, SelectedUsersForProject.Select(user => user.Id).ToList());
+            _viewService.ShowActionResult(resultAction, "New users are added to project");
+
+            ProjectUsers.Remove(user);
+
+            UpdatePage();
         }
 
         #endregion

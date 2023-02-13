@@ -60,7 +60,7 @@ namespace TaskManagerCourse.Client.ViewModels
             LogoutCommand = new DelegateCommand(Logout);
             NavButtons.Add(_logoutBtnName, LogoutCommand);
 
-            StartWork(_workTimeMinutes);
+            //StartWork(_workTimeMinutes);
 
             OpenMyInfoPage();
         }
