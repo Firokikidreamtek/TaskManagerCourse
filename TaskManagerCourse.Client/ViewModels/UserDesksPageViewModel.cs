@@ -88,6 +88,7 @@ namespace TaskManagerCourse.Client.ViewModels
             }
         }
         #endregion
+
         #region METHODS
         private void OpenUpdateDesk()
         {
@@ -96,6 +97,7 @@ namespace TaskManagerCourse.Client.ViewModels
             ColumnsForNewDesk = new ObservableCollection<ColumnBindingHelp>(SelectedDesk.Model.Columns.Select(c => new ColumnBindingHelp(c)));
 
             _desksViewService.OpenViewDeskInfo(SelectedDesk.Model.Id, this);
+            //_desksViewService.CurrentOpenedWindow.Close();
         }
 
         private void UpdateDesk()

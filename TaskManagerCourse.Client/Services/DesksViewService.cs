@@ -8,16 +8,14 @@ using TaskManagerCourse.Common.Models;
 
 namespace TaskManagerCourse.Client.Services
 {
-    public class DesksViewService
+    public class DesksViewService : CommonViewService
     {
         private AuthToken _token;
         private DesksRequestService _desksRequestService;
-        private CommonViewService _viewService;
         public DesksViewService(AuthToken token, DesksRequestService desksRequestService)
         {
             _token = token;
             _desksRequestService = desksRequestService;
-            _viewService = new CommonViewService();
         }
 
         public ModelClient<DeskModel> GetDeskClientById(object deskId)
@@ -58,27 +56,29 @@ namespace TaskManagerCourse.Client.Services
         public void OpenViewDeskInfo(object deskId, BindableBase context)
         {
             var wnd = new CreateOrUpdateDeskWindow();
-            _viewService.OpenWindow(wnd, context);
+            this.OpenWindow(wnd, context);
         }
 
         public void UpdateDesk(DeskModel desk)
         {
 
             var resultAction = _desksRequestService.UpdateDesk(_token, desk);
-            _viewService.ShowActionResult(resultAction, "New project is updated");
+            this.ShowActionResult(resultAction, "New project is updated");
+            this.CurrentOpenedWindow.Close();
         }
 
         public void DeleteDesk(int deskId)
         {
             var resultAction = _desksRequestService.DeleteDesk(_token, deskId);
-            _viewService.ShowActionResult(resultAction, "New project is deleted");
+            this.ShowActionResult(resultAction, "New project is deleted");
+            this.CurrentOpenedWindow.Close();
         }
 
         public ModelClient<DeskModel> SelectPhotoForDesk(ModelClient<DeskModel> selectedDesk)
         {
             if(selectedDesk?.Model != null)
             {
-                _viewService.SetPhotoForObject(selectedDesk.Model);
+                this.SetPhotoForObject(selectedDesk.Model);
                 selectedDesk = new ModelClient<DeskModel>(selectedDesk.Model);
             }
             return selectedDesk;
