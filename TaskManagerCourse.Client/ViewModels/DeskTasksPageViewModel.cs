@@ -243,7 +243,6 @@ namespace TaskManagerCourse.Client.ViewModels
                 {
                     GetSelectedColumn(sender);
                 });
-                //columnControl.MouseEnter += new System.Windows.Input.MouseEventHandler((s, e) => SendTaskToNewColumn());
                 columnControl.MouseLeftButtonUp += new System.Windows.Input.MouseButtonEventHandler((s, e) => SendTaskToNewColumn());
 
                 Grid.SetRow(columnControl, 1);
@@ -258,7 +257,6 @@ namespace TaskManagerCourse.Client.ViewModels
                     {
                         SelectedTask = task;
                     });
-                    //taskView.MouseLeave += new System.Windows.Input.MouseEventHandler((s, e) => SendTaskToNewColumn());
                     tasksViews.Add(taskView);
                 }
                 columnControl.ItemsSource = tasksViews;

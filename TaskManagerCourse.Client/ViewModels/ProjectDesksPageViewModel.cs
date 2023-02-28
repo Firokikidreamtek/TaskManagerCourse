@@ -175,7 +175,6 @@ namespace TaskManagerCourse.Client.ViewModels
         {
             SelectedDesk.Model.Columns = ColumnsForNewDesk.Select(c => c.Value).ToArray();
             _desksViewService.UpdateDesk(SelectedDesk.Model);
-            
         }
 
         private void DeleteDesk()

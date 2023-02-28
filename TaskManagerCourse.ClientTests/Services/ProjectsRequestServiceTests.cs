@@ -3,9 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using TaskManagerCourse.Client.Models;
+using TaskManagerCourse.Client.Services;
 using TaskManagerCourse.Common.Models;
 
-namespace TaskManagerCourse.Client.Services.Tests
+namespace TaskManagerCourse.ClientTests.Services
 {
     [TestClass()]
     public class ProjectsRequestServiceTests

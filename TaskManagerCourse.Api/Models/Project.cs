@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TaskManagerCourse.Api.Models.Abstractions;
 using TaskManagerCourse.Common.Models;
 
 namespace TaskManagerCourse.Api.Models

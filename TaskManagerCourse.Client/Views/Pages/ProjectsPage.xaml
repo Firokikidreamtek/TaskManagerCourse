@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TaskManagerCourse.Client.Views.Pages"
+      xmlns:focal="clr-namespace:TaskManagerCourse.Client.Models"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ProjectsPage">
@@ -115,15 +116,21 @@
                     Command="{Binding OpenProjectDesksPageCommand}" 
                     Style="{StaticResource commonBtn}"
                     Width="150"/>
-            <ListBox Grid.Row="4" ItemsSource="{Binding ProjectUsers}">
-                <ListBox.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Remove" Command="{Binding DeleteUserFromProjectCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
-                    </ContextMenu>
-                </ListBox.ContextMenu>
+            <ListBox Grid.Row="4" 
+                     ItemsSource="{Binding Path=ProjectUsers}" 
+                     SelectedItem="{Binding SelectedUser, Mode=OneWay}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Path=Email}" Style="{StaticResource commonTBlock}"/>
+                        <TextBlock Text="{Binding Path=Email}" 
+                                   Style="{StaticResource commonTBlock}" 
+                                   Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}">
+                            <TextBlock.ContextMenu>
+                                <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                                    <MenuItem Header="Remove" 
+                                              Command="{Binding DeleteUserFromProjectCommand}"/>
+                                </ContextMenu>
+                            </TextBlock.ContextMenu>
+                        </TextBlock>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

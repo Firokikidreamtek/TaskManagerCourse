@@ -7,7 +7,7 @@ using TaskManagerCourse.Common.Models;
 using TaskManagerCourse.Client.Models;
 using System.Net;
 
-namespace TaskManagerCourse.Client.Services.Tests
+namespace TaskManagerCourse.ClientTests.Services
 {
     [TestClass()]
     public class DesksRequestServiceTests

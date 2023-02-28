@@ -2,6 +2,7 @@
 using System.Linq;
 using TaskManagerCourse.Common.Models;
 using Newtonsoft.Json;
+using TaskManagerCourse.Api.Models.Abstractions;
 
 namespace TaskManagerCourse.Api.Models
 {

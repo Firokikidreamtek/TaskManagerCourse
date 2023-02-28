@@ -1,8 +1,10 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Data;
 using TaskManagerCourse.Client.Models;
 using TaskManagerCourse.Client.Services;
 using TaskManagerCourse.Client.Views.AddWindows;
@@ -29,9 +31,10 @@ namespace TaskManagerCourse.Client.ViewModels
         public DelegateCommand SelectPhotoForProjectCommand { get; private set; }
         public DelegateCommand OpenNewUsersToProjectCommand { get; private set; }
         public DelegateCommand AddUsersToProjectCommand { get; private set; }
-        public DelegateCommand<object> DeleteUserFromProjectCommand { get; private set; }
+        public DelegateCommand DeleteUserFromProjectCommand { get; private set; }
 
         public DelegateCommand OpenProjectDesksPageCommand { get; private set; }
+
 
         #endregion
 
@@ -43,6 +46,7 @@ namespace TaskManagerCourse.Client.ViewModels
             _mainWindowVM = mainWindowVM;
             _token = token;
 
+
             UpdatePage();
 
             OpenNewProjectCommand = new DelegateCommand(OpenNewProject);
@@ -50,7 +54,7 @@ namespace TaskManagerCourse.Client.ViewModels
             ShowProjectInfoCommand = new DelegateCommand<object>(ShowProjectInfo);
             CreateOrUpdateProjectCommand = new DelegateCommand(CreateOrUpdateProject);
             DeleteProjectCommand = new DelegateCommand(DeleteProject);
-            DeleteUserFromProjectCommand = new DelegateCommand<object>(DeleteUserFromProject);
+            DeleteUserFromProjectCommand = new DelegateCommand(DeleteUserFromProject);
 
             SelectPhotoForProjectCommand = new DelegateCommand(SelectPhotoForProject);
             OpenNewUsersToProjectCommand = new DelegateCommand(OpenNewUsersToProject);
@@ -74,6 +78,17 @@ namespace TaskManagerCourse.Client.ViewModels
             {
                 _typeActionWithProject = value;
                 RaisePropertyChanged(nameof(TypeActionWithProject));
+            }
+        }
+
+        private UserModel _selectedUser;
+        public UserModel SelectedUser
+        {
+            get => _selectedUser;
+            set
+            {
+                _selectedUser = value;
+                RaisePropertyChanged(nameof(SelectedUser));
             }
         }
 
@@ -156,7 +171,7 @@ namespace TaskManagerCourse.Client.ViewModels
         {
             SelectedProject = GetProjectClientById(projectId);
             var adminId = _usersRequestService.GetProjectUserAdmin(_token, CurrentUser.Id);
-            if(adminId == SelectedProject.Model.AdminId)
+            if (adminId == SelectedProject.Model.AdminId)
             {
                 TypeActionWithProject = ClientAction.Update;
 
@@ -190,7 +205,7 @@ namespace TaskManagerCourse.Client.ViewModels
 
         private void CreateOrUpdateProject()
         {
-            if(TypeActionWithProject == ClientAction.Create)
+            if (TypeActionWithProject == ClientAction.Create)
             {
                 CreateProject();
             }
@@ -263,7 +278,7 @@ namespace TaskManagerCourse.Client.ViewModels
 
         private void OpenProjectDesksPage()
         {
-            if(SelectedProject?.Model != null)
+            if (SelectedProject?.Model != null)
             {
                 var page = new ProjectDesksPage();
                 _mainWindowVM.OpenPage(page, $"Desks of {SelectedProject.Model.Name}", new ProjectDesksPageViewModel(_token, SelectedProject.Model, _mainWindowVM));
@@ -271,16 +286,19 @@ namespace TaskManagerCourse.Client.ViewModels
         }
 
 
-        private void DeleteUserFromProject(object obj)
+        private void DeleteUserFromProject()
         {
-            var user = (UserModel)obj;
-            SelectedUsersForProject.Add(user);
-            var resultAction = _projectsRequestService.RemoveUsersFromProject(_token, SelectedProject.Model.Id, SelectedUsersForProject.Select(user => user.Id).ToList());
-            _viewService.ShowActionResult(resultAction, "New users are added to project");
+            if (SelectedUser != null)
+            {
+                var user = (UserModel)SelectedUser;
+                SelectedUsersForProject.Add(user);
+                var resultAction = _projectsRequestService.RemoveUsersFromProject(_token, SelectedProject.Model.Id, SelectedUsersForProject.Select(user => user.Id).ToList());
+                _viewService.ShowActionResult(resultAction, "New users are added to project");
 
-            ProjectUsers.Remove(user);
+                ProjectUsers.Remove(user);
 
-            UpdatePage();
+                UpdatePage();
+            }
         }
 
         #endregion

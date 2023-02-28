@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManagerCourse.Common.Models;
 
-namespace TaskManagerCourse.Api.Models
+namespace TaskManagerCourse.Api.Models.Abstractions
 {
     public class CommonObject
     {
